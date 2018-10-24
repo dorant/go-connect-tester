@@ -2,3 +2,5 @@
 /http-server
 /grpc-client
 /grpc-server
+*~
+\.helmignore

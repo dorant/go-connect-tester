@@ -11,6 +11,10 @@ import (
 	"time"
 )
 
+const (
+	timeBetweenConnects = 10 * time.Second
+)
+
 type request struct {
 	Hostname string `json: hostname`
 }
@@ -34,15 +38,20 @@ func main() {
 	if err != nil {
 		log.Printf("json failure: %v\n", err)
 	}
+
 	for {
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(b))
 		req.Header.Set("Content-Type", "application/json")
 
-		client := &http.Client{} //{Timeout: time.Second * 10}
+		client := &http.Client{}
+		// Make sure the connection is timed out before next connect
+		client.Timeout = timeBetweenConnects - 2*time.Second
+
 		resp, err := client.Do(req)
 		if err != nil {
 			log.Printf("Failure while Get(): %v\n", err)
 		} else {
+			defer resp.Body.Close()
 			body, err := ioutil.ReadAll(resp.Body)
 			if err != nil {
 				log.Fatal("Error reading the body", err)
@@ -57,9 +66,7 @@ func main() {
 			name := bodyRsp.Hostname
 			log.Printf("Response from server '%s' received\n", name)
 		}
-		req.Close = true
-		client = nil
 
-		time.Sleep(10 * time.Second)
+		time.Sleep(timeBetweenConnects)
 	}
 }

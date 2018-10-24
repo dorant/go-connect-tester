@@ -41,6 +41,9 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+
+	// Making sure the client disconnects, and not re-use connection
+	w.Header().Set("Connection", "close")
 	w.Write(rspData)
 }
 
