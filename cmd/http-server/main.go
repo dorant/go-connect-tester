@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 )
 
 const (
@@ -15,6 +16,8 @@ const (
 type request struct {
 	Hostname string `json: hostname`
 }
+
+var hostname string
 
 func hello(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
@@ -31,7 +34,7 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	name := req.Hostname
 	log.Printf("Call from client '%s' received\n", name)
 
-	rsp := request{Hostname: name}
+	rsp := request{Hostname: hostname}
 	rspData, err := json.Marshal(rsp)
 	if err != nil {
 		fmt.Fprintf(w, "Error: %s", err)
@@ -42,6 +45,8 @@ func hello(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	hostname, _ = os.Hostname()
+
 	http.HandleFunc("/", hello)
 
 	log.Printf("Start listen to: %s\n", port)

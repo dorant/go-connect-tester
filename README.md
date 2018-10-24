@@ -13,6 +13,7 @@ Installing protoc is a manual step.
 # Setup helm/tiller first (RBAC rules & service account needed on AWS)
 kubectl create -f charts/helm/rbac-config.yaml
 helm init --upgrade --service-account tiller
+kubectl wait pods --for=condition=ready -n kube-system -l app=helm,name=tiller
 ```
 
 
@@ -43,7 +44,7 @@ helm delete grpc-tester-client
 
 Deploy the server and client to default namespace
 ```
-# Deploy 2+ servers
+# Deploy x servers
 helm upgrade --install --force http-tester-server charts/http-tester-server/
 
 # Deploy 1 client
