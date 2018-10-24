@@ -1,0 +1,4 @@
+FROM scratch
+COPY http-server /app/
+WORKDIR /app
+CMD ["./http-server"]

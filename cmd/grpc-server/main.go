@@ -6,7 +6,7 @@ import (
 	"log"
 	"net"
 
-	pb "github.com/dorant/go-grpc-tester/proto/hello"
+	pb "github.com/dorant/go-connect-tester/proto/hello"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
