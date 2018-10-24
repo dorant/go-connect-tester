@@ -1,27 +1,29 @@
-all: client server
 
-CLIENT_TAG = 'bjornsv/grpc-client:1.2'
-SERVER_TAG = 'bjornsv/grpc-server:1.2'
+GRPC_CLIENT_TAG = 'bjornsv/grpc-client:1.2'
+GRPC_SERVER_TAG = 'bjornsv/grpc-server:1.2'
 
-.PHONY: client server gen deps
-client:
-	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o client cmd/client/main.go
-	docker build . -t $(CLIENT_TAG) -f Dockerfile.client
+.PHONY: grpc-client grpc-server gen deps
 
-server:
-	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o server cmd/server/main.go
-	docker build . -t $(SERVER_TAG) -f Dockerfile.server
+all: grpc-client grpc-server
+
+grpc-client:
+	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o grpc-client cmd/grpc-client/main.go
+	docker build . -t $(GRPC_CLIENT_TAG) -f Dockerfile.grpc-client
+
+grpc-server:
+	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o grpc-server cmd/grpc-server/main.go
+	docker build . -t $(GRPC_SERVER_TAG) -f Dockerfile.grpc-server
 
 push:
 	@@echo
 	@@echo "Dont forget: docker login -u <dockerhub-username>"
 	@@echo
-	docker push $(CLIENT_TAG)
-	docker push $(SERVER_TAG)
+	docker push $(GRPC_CLIENT_TAG)
+	docker push $(GRPC_SERVER_TAG)
 
 
 clean:
-	rm -rf server client
+	rm -rf grpc-server grpc-client
 gen:
 	go generate ./...
 

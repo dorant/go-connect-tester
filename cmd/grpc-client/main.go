@@ -10,10 +10,6 @@ import (
 	"google.golang.org/grpc"
 )
 
-const (
-	defaultName = "world"
-)
-
 func main() {
 
 	host := os.Getenv("HOST")
@@ -26,7 +22,9 @@ func main() {
 	}
 	address := host + ":" + port
 
-	log.Printf("Client connects to: %s\n", address)
+	log.Printf("Client connects to server at: %s\n", address)
+
+	hostname, _ := os.Hostname()
 
 	// Set up a connection to the server:
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
@@ -37,13 +35,13 @@ func main() {
 	c := pb.NewGreeterClient(conn)
 
 	for {
-		time.Sleep(10 * time.Second)
-
-		r, err := c.SayHello(context.Background(), &pb.HelloRequest{Name: defaultName})
+		r, err := c.SayHello(context.Background(), &pb.HelloRequest{Name: hostname})
 		if err != nil {
 			log.Printf("Failed calling grpc::SayHello(): %v\n", err)
 		} else {
-			log.Printf("Called grpc::SayHello() which returned: %s\n", r)
+			log.Printf("Call to server returned: %s\n", r)
 		}
+
+		time.Sleep(10 * time.Second)
 	}
 }

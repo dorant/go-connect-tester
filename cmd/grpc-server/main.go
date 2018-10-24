@@ -20,7 +20,7 @@ type server struct{}
 
 // SayHello implements helloworld.GreeterServer
 func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
-	log.Printf("A client called grpc::SayHello()\n")
+	log.Printf("Call from client '%s' received\n", in.Name)
 	return &pb.HelloReply{Message: "Hello " + in.Name}, nil
 }
 

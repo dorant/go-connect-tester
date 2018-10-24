@@ -1,0 +1,4 @@
+FROM scratch
+COPY grpc-client /app/
+WORKDIR /app
+CMD ["./grpc-client"]

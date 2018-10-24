@@ -1,4 +1,0 @@
-FROM scratch
-COPY server /app/
-WORKDIR /app
-CMD ["./server"]
