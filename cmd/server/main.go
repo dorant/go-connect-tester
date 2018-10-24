@@ -20,10 +20,13 @@ type server struct{}
 
 // SayHello implements helloworld.GreeterServer
 func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
+	log.Printf("A client called grpc::SayHello()\n")
 	return &pb.HelloReply{Message: "Hello " + in.Name}, nil
 }
 
 func main() {
+	log.Printf("Start listen to: %s\n", port)
+
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
