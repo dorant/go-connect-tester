@@ -1,0 +1,8 @@
+apiVersion: core.federation.k8s.io/v1alpha1
+kind: FederatedServicePlacement
+metadata:
+  name: http-tester-client
+spec:
+  clusterNames:
+  - cluster2
+  - cluster1

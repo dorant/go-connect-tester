@@ -1,0 +1,15 @@
+apiVersion: core.federation.k8s.io/v1alpha1
+kind: FederatedService
+metadata:
+  name: http-tester-server
+spec:
+  template:
+    spec:
+      selector:
+        app.kubernetes.io/name: http-tester-server
+      type: ClusterIP #None #LoadBalancer
+      ports:
+        - port: 3000
+          targetPort: http
+          protocol: TCP
+          name: http
