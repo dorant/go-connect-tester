@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 const (
@@ -18,6 +19,7 @@ type request struct {
 }
 
 var hostname string
+var respondWithClose bool
 
 func hello(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
@@ -42,12 +44,20 @@ func hello(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	// Making sure the client disconnects, and not re-use connection
-	w.Header().Set("Connection", "close")
+	if respondWithClose {
+		// Making sure the client disconnects, and not re-use connection
+		w.Header().Set("Connection", "close")
+	}
 	w.Write(rspData)
 }
 
 func main() {
+	respondWithClose = false
+	if strings.ToLower(os.Getenv("FORCE_CLOSE")) == "yes" {
+		log.Println("Force close of client request enabled")
+		respondWithClose = true
+	}
+
 	hostname, _ = os.Hostname()
 
 	http.HandleFunc("/", hello)

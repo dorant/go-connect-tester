@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: http-tester-server
+  labels:
+    app: http-tester-server
+spec:
+  ports:
+    - port: 3000
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: http-tester-server
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: http-tester-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: http-tester-server
+  template:
+    metadata:
+      labels:
+        app: http-tester-server
+    spec:
+      containers:
+      - name: http-tester-server
+        image: bjornsv/http-server:1.1
+        imagePullPolicy: Always
+        ports:
+          - name: http
+            containerPort: 50000
+            protocol: TCP
+        env:
+          - name: FORCE_CLOSE
+            value: "no"
