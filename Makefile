@@ -1,6 +1,6 @@
 
-HTTP_CLIENT_TAG = 'bjornsv/http-client:1.0'
-HTTP_SERVER_TAG = 'bjornsv/http-server:1.0'
+HTTP_CLIENT_TAG = 'bjornsv/http-client:1.1'
+HTTP_SERVER_TAG = 'bjornsv/http-server:1.1'
 GRPC_CLIENT_TAG = 'bjornsv/grpc-client:1.2'
 GRPC_SERVER_TAG = 'bjornsv/grpc-server:1.2'
 

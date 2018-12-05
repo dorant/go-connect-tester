@@ -14,11 +14,12 @@ spec:
     spec:
       containers:
       - name: http-tester-client
-        image: bjornsv/http-client:1.0
+        image: bjornsv/http-client:1.1
         imagePullPolicy: Always
         env:
           - name: HOST
-            value: http-tester-server
+            value: http-tester-server.default.global
+            #value: http-tester-server
             #value: http-tester-server.default.svc.cluster.local
           - name: PORT
             value: "3000"
